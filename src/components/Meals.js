@@ -28,6 +28,7 @@ const Meals = () => {
       {meals.map((meal) => (
         <MealItem
           key={meal.id}
+          id={meal.id}
           name={meal.name}
           price={meal.price}
           description={meal.description}
