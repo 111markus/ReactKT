@@ -25,6 +25,10 @@ const cartReducer = (state, action) => {
     return { items: updatedItems };
   }
 
+  if (action.type === "CLEAR_CART") {
+    return { items: [] };
+  }
+
   return state;
 };
 
@@ -46,8 +50,18 @@ const App = () => {
     setModalOpen(false);
   };
 
+  const checkoutHandler = () => {
+    dispatchCartAction({ type: "CLEAR_CART" });
+    setModalOpen(false);
+  };
+
   const totalItems = cartState.items.reduce(
     (total, item) => total + item.quantity,
+    0,
+  );
+
+  const cartTotal = cartState.items.reduce(
+    (total, item) => total + item.price * item.quantity,
     0,
   );
 
@@ -59,8 +73,22 @@ const App = () => {
         <Header onOpenCart={openModalHandler} totalItems={totalItems} />
         <main>
           <Meals />
-          <Modal isOpen={modalOpen} onClose={closeModalHandler}>
-            <p>Test</p>
+          <Modal
+            isOpen={modalOpen}
+            onClose={closeModalHandler}
+            onCheckout={checkoutHandler}
+          >
+            <h2>Your cart</h2>
+            <ul>
+              {cartState.items.map((item) => (
+                <li key={item.id} className="cart-item">
+                  <p>
+                    {item.name} - {item.quantity} x ${item.price}
+                  </p>
+                </li>
+              ))}
+            </ul>
+            <p className="cart-total">{cartTotal.toFixed(2)} €</p>
           </Modal>
         </main>
       </CartContext.Provider>

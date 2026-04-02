@@ -17,7 +17,15 @@ const Modal = (props) => {
 
   return (
     <dialog ref={dialogRef} className="modal">
-      <div className="modal-actions">{props.children}</div>
+      <div className="modal-content">{props.children}</div>
+      <div className="modal-actions">
+        <button onClick={props.onClose} className="text-button">
+          Close
+        </button>
+        <button onClick={props.onCheckout} className="text-button">
+          Checkout
+        </button>
+      </div>
     </dialog>
   );
 };
